@@ -1,4 +1,0 @@
-/home/radu/dev/QT/b-remindR/CMakeFiles/b-remindR.dir
-/home/radu/dev/QT/b-remindR/CMakeFiles/edit_cache.dir
-/home/radu/dev/QT/b-remindR/CMakeFiles/rebuild_cache.dir
-/home/radu/dev/QT/b-remindR/CMakeFiles/b-remindR_autogen.dir
