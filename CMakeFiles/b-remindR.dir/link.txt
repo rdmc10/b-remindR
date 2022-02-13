@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/b-remindR.dir/b-remindR_autogen/mocs_compilation.cpp.o CMakeFiles/b-remindR.dir/mainwindow.cpp.o CMakeFiles/b-remindR.dir/main.cpp.o -o b-remindR  /usr/lib/libQt5Widgets.so.5.15.2 /usr/lib/libQt5Gui.so.5.15.2 /usr/lib/libQt5Core.so.5.15.2 
