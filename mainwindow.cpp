@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::plus_clicked(){
     QVBoxLayout* layout=ui->verticalLayout;
     QHBoxLayout* new_layout = new QHBoxLayout();
-    new_layout->setSpacing(20);
+    new_layout->setSpacing(30);
 
     QLineEdit* line_edit = new QLineEdit();
     line_edit->setText("HEEY");
