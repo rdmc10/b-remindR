@@ -19,8 +19,30 @@ MainWindow::MainWindow(QWidget *parent)
     resize(780,600);
 
     sysTrayIcon=new QSystemTrayIcon();
+
+    QAction* exit_action = new QAction(tr("&Exit"),this);
+    connect(exit_action,&QAction::triggered,[=](){
+        QApplication::quit();
+    });
+
+    QAction* hide_action = new QAction(tr("&Hide"),this);
+    connect(hide_action,&QAction::triggered,[=](){
+        this->hide();
+    });
+
+    QAction* show_action = new QAction(tr("&Show"),this);
+    connect(show_action,&QAction::triggered,[=](){
+        this->show();
+    });
+
     //TODO:change icon
     this->sysTrayIcon->setIcon(QIcon("./icon.png"));
+    QMenu* tray_menu = new QMenu();
+    tray_menu->addAction(exit_action);
+    tray_menu->addAction(hide_action);
+    tray_menu->addAction(show_action);
+    this->sysTrayIcon->setContextMenu(tray_menu);
+
 
     //Generate one timer by default
     plus_clicked();
@@ -125,6 +147,7 @@ void MainWindow::start_clicked(){
         execute_timer(timer,it);
     }
     this->sysTrayIcon->show();
+    this->hide();
 }
 
 void MainWindow::update_clicked(){
