@@ -17,6 +17,7 @@
 #include <QSystemTrayIcon>
 #include <QIcon>
 #include <QTimer>
+#include <QMapIterator>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -38,7 +39,8 @@ public:
     void quit_clicked();
     void start_clicked();
     void stop_clicked();
-    void execute_timer(QTimer*,QString,int,bool);
+    void update_clicked();
+    void execute_timer(QTimer*,QLayout*);
     ~MainWindow();
 private:
     Ui::MainWindow *ui;

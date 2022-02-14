@@ -9,7 +9,7 @@
 #include <QVBoxLayout>
 #include <QCheckBox>
 
-#define to_ms(x) x*60000
+#define to_ms(x) (int)(x*60000)
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,30 +29,35 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->pushButton_5,&QPushButton::clicked,this,&MainWindow::quit_clicked);
     QObject::connect(ui->pushButton_2,&QPushButton::clicked,this,&MainWindow::start_clicked);
     QObject::connect(ui->pushButton_3,&QPushButton::clicked,this,&MainWindow::stop_clicked);
+    QObject::connect(ui->pushButton_4,&QPushButton::clicked,this,&MainWindow::update_clicked);
 }
 
 void MainWindow::plus_clicked(){
     QVBoxLayout* layout=ui->verticalLayout;
     QHBoxLayout* new_layout = new QHBoxLayout();
-    new_layout->setSpacing(30);
+    new_layout->setSpacing(15);
 
     QLineEdit* line_edit = new QLineEdit();
     line_edit->setText("HEEY");
     new_layout->addWidget(line_edit);
 
-    QSpinBox* spin_box = new QSpinBox();
-    spin_box->setRange(1,9999);
+    QDoubleSpinBox* spin_box = new QDoubleSpinBox();
+    spin_box->setRange(0,9999);
     new_layout->addWidget(spin_box);
+    spin_box->setSingleStep(1.0);
 
     QCheckBox* check_box = new QCheckBox();
-    check_box->setText(QString(""));
+    check_box->setText(QString("Loop"));
     check_box->setChecked(0);
     new_layout->addWidget(check_box);
 
-
     QPushButton* new_close_button = new QPushButton();
-    new_close_button->setText(QString("    -    "));
+    new_close_button->setText(QString("-"));
     new_layout->addWidget(new_close_button);
+
+    QLabel* label = new QLabel();
+    label->setText(QString("Stopped"));
+    new_layout->addWidget(label);
 
     button_to_layout_map.insert(new_close_button,new_layout);
 
@@ -82,44 +87,67 @@ void MainWindow::minus_clicked(){
     delete layout;
 }
 
-void MainWindow::execute_timer(QTimer* timer,QString message,int interval,bool looping){
+void MainWindow::execute_timer(QTimer* timer,QLayout* layout){
+    QLineEdit* line_edit = qobject_cast<QLineEdit*>(layout->itemAt(0)->widget());
+    QDoubleSpinBox* spin_box = qobject_cast<QDoubleSpinBox*>(layout->itemAt(1)->widget());
+    QCheckBox* check_box = qobject_cast<QCheckBox*>(layout->itemAt(2)->widget());
+    QLabel* label = qobject_cast<QLabel*>(layout->itemAt(4)->widget());
+
+    bool looping = check_box->isChecked();
+    QString message = line_edit->text();
+    int interval = spin_box->value();
+    if(interval>0)
+        label->setText(QString("Running"));
+    else
+        label->setText(QString("Stopped"));
+
     connect(timer, &QTimer::timeout, this, [=]() {
         //TODO: change icon
         this->sysTrayIcon->showMessage(QString("Reminder!"), message,
                                         QIcon("./icon.png"),
-                                        10000);
-        if(looping)
+                                        15000);
+        label->setText("Stopped");
+        if(looping && interval)
             timer->start(to_ms(interval));
         else{
             timer->stop();
-            //TODO: do more memory checking
-            delete timer;
         }
     });
-    timer->start(to_ms(interval));
+
+    if(interval>0)
+        timer->start(to_ms(interval));
 }
 
 void MainWindow::start_clicked(){
-    int interval;
-    QString message;
-    bool looping;
+    QTimer* timer;
     for(auto it:layout_vec){
-        QLineEdit* line_edit = qobject_cast<QLineEdit*>(it->itemAt(0)->widget());
-        QSpinBox* spin_box = qobject_cast<QSpinBox*>(it->itemAt(1)->widget());
-        QCheckBox* check_box = qobject_cast<QCheckBox*>(it->itemAt(2)->widget());
-        QTimer* timer = layout_timer_map.value(it);
-
-        looping = check_box->isChecked();
-        message = line_edit->text();
-        interval = spin_box->value();
-        execute_timer(timer,message,interval,looping);
+        timer = layout_timer_map.value(it);
+        execute_timer(timer,it);
     }
     this->sysTrayIcon->show();
 }
 
+void MainWindow::update_clicked(){
+    QMapIterator<QLayout*,QTimer*> it(layout_timer_map);
+    QLabel* label;
+    int interval;
+    while(it.hasNext()){
+        it.next();
+        interval = qobject_cast<QDoubleSpinBox*>(it.key()->itemAt(1)->widget())->value();
+        if(!(it.value()->isActive()))
+            if(interval > 0)
+                execute_timer(it.value(),it.key());
+        if(!interval)
+            qobject_cast<QLabel*>(it.key()->itemAt(4)->widget())->setText(QString("Stopped"));
+    }
+}
+
 void MainWindow::stop_clicked(){
-    for(auto it:layout_timer_map)
-        it->stop();
+    QMapIterator<QLayout*,QTimer*> it(layout_timer_map);
+    while(it.hasNext()){
+        it.next();
+        it.value()->stop();
+    }
 }
 
 void MainWindow::quit_clicked(){
