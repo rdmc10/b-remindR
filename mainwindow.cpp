@@ -33,10 +33,11 @@ MainWindow::MainWindow(QWidget *parent)
     QAction* show_action = new QAction(tr("&Show"),this);
     connect(show_action,&QAction::triggered,[=](){
         this->show();
+        resize(780,600);
     });
 
     //TODO:change icon
-    this->sysTrayIcon->setIcon(QIcon("./icon.png"));
+    this->sysTrayIcon->setIcon(QIcon("./reminder.png"));
     QMenu* tray_menu = new QMenu();
     tray_menu->addAction(exit_action);
     tray_menu->addAction(hide_action);
@@ -121,7 +122,7 @@ void MainWindow::execute_timer(QTimer* timer,QLayout* layout){
 
     bool looping = check_box->isChecked();
     QString message = line_edit->text();
-    int interval = spin_box->value();
+    double interval = spin_box->value();
     if(interval>0)
         label->setText(QString("Running"));
     else
@@ -130,7 +131,7 @@ void MainWindow::execute_timer(QTimer* timer,QLayout* layout){
     connect(timer, &QTimer::timeout, this, [=]() {
         //TODO: change icon
         this->sysTrayIcon->showMessage(QString("Reminder!"), message,
-                                        QIcon("./icon.png"),
+                                        QIcon("./warning.png"),
                                         15000);
         label->setText("Stopped");
         if(looping && interval)
@@ -156,7 +157,7 @@ void MainWindow::start_clicked(){
 void MainWindow::update_clicked(){
     QMapIterator<QLayout*,QTimer*> it(layout_timer_map);
     QLabel* label;
-    int interval;
+    double interval;
     while(it.hasNext()){
         it.next();
         interval = qobject_cast<QDoubleSpinBox*>(it.key()->itemAt(1)->widget())->value();
