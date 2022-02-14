@@ -43,15 +43,19 @@ MainWindow::MainWindow(QWidget *parent)
     tray_menu->addAction(show_action);
     this->sysTrayIcon->setContextMenu(tray_menu);
 
+    this->sysTrayIcon->show();
 
     //Generate one timer by default
     plus_clicked();
 
     QObject::connect(ui->pushButton,&QPushButton::clicked,this,&MainWindow::plus_clicked);
-    QObject::connect(ui->pushButton_5,&QPushButton::clicked,this,&MainWindow::quit_clicked);
     QObject::connect(ui->pushButton_2,&QPushButton::clicked,this,&MainWindow::start_clicked);
     QObject::connect(ui->pushButton_3,&QPushButton::clicked,this,&MainWindow::stop_clicked);
     QObject::connect(ui->pushButton_4,&QPushButton::clicked,this,&MainWindow::update_clicked);
+    QObject::connect(ui->pushButton_5,&QPushButton::clicked,this,&MainWindow::quit_clicked);
+    QObject::connect(ui->pushButton_6,&QPushButton::clicked,this,[=](){
+            this->hide();
+        });
 }
 
 void MainWindow::plus_clicked(){
@@ -146,7 +150,6 @@ void MainWindow::start_clicked(){
         timer = layout_timer_map.value(it);
         execute_timer(timer,it);
     }
-    this->sysTrayIcon->show();
     this->hide();
 }
 

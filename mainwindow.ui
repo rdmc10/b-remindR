@@ -36,7 +36,7 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>440</x>
+      <x>400</x>
       <y>110</y>
       <width>79</width>
       <height>16</height>
@@ -113,7 +113,7 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>560</x>
       <y>110</y>
       <width>80</width>
       <height>25</height>
@@ -127,13 +127,26 @@
     <property name="geometry">
      <rect>
       <x>650</x>
-      <y>520</y>
+      <y>540</y>
       <width>80</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
      <string>Quit</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_6">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>510</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hide</string>
     </property>
    </widget>
   </widget>
