@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-//#include "timercpp.h"
 #include <QAction>
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -161,11 +160,12 @@ void MainWindow::update_clicked(){
     while(it.hasNext()){
         it.next();
         interval = qobject_cast<QDoubleSpinBox*>(it.key()->itemAt(1)->widget())->value();
-        if(!(it.value()->isActive()))
+        if(!(it.value()->isActive())){
             if(interval > 0)
                 execute_timer(it.value(),it.key());
-        if(!interval)
-            qobject_cast<QLabel*>(it.key()->itemAt(4)->widget())->setText(QString("Stopped"));
+            else
+                qobject_cast<QLabel*>(it.key()->itemAt(4)->widget())->setText(QString("Stopped"));
+        }
     }
 }
 
