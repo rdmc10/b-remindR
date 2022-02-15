@@ -3,6 +3,8 @@ Minimal reminder app written in Qt (C++)
 
 NOTE: This is a personal project, created for personal use, licensed under the GPLv3 license. Only tested on GNU/Linux!
 
+Dependencies: qt5 and a c++ compiler
+
 How to install:
 * git clone https://github.com/rdmc10/b-remindR
 * cd b-remindR
