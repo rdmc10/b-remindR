@@ -35,7 +35,6 @@ MainWindow::MainWindow(QWidget *parent)
         resize(780,600);
     });
 
-    //TODO:change icon
     this->sysTrayIcon->setIcon(QIcon("./reminder.png"));
     QMenu* tray_menu = new QMenu();
     tray_menu->addAction(exit_action);
@@ -114,6 +113,8 @@ void MainWindow::minus_clicked(){
 }
 
 void MainWindow::execute_timer(QTimer* timer,QLayout* layout){
+    if(!timer || !layout)
+        return;
     QLineEdit* line_edit = qobject_cast<QLineEdit*>(layout->itemAt(0)->widget());
     QDoubleSpinBox* spin_box = qobject_cast<QDoubleSpinBox*>(layout->itemAt(1)->widget());
     QCheckBox* check_box = qobject_cast<QCheckBox*>(layout->itemAt(2)->widget());
@@ -124,18 +125,15 @@ void MainWindow::execute_timer(QTimer* timer,QLayout* layout){
     double interval = spin_box->value();
     if(interval>0)
         label->setText(QString("Running"));
-    else
-        label->setText(QString("Stopped"));
 
     connect(timer, &QTimer::timeout, this, [=]() {
-        //TODO: change icon
         this->sysTrayIcon->showMessage(QString("Reminder!"), message,
                                         QIcon("./warning.png"),
                                         15000);
-        label->setText("Stopped");
         if(looping && interval)
             timer->start(to_ms(interval));
         else{
+            label->setText("Stopped");
             timer->stop();
         }
     });

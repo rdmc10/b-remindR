@@ -34,6 +34,7 @@ public:
     QVector<QHBoxLayout*> layout_vec;
     QSystemTrayIcon* sysTrayIcon;
 
+    void on_activated(QSystemTrayIcon::ActivationReason);
     void plus_clicked();
     void minus_clicked();
     void quit_clicked();
