@@ -12,6 +12,7 @@ How to install:
 
 
 Example use case: 
+
 ![image](https://user-images.githubusercontent.com/66037895/154042125-ab6b2257-672d-4bb5-a2a7-ad67325d1a2b.png)
 
 Once you click the "Start all timers" button, every timer will be started. Once a timer ends, a pop-up notification 
